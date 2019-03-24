@@ -1,0 +1,672 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 11.2
+-- Dumped by pg_dump version 11.2
+
+-- Started on 2019-03-24 15:11:59
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 1 (class 3079 OID 16384)
+-- Name: adminpack; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS "adminpack" WITH SCHEMA "pg_catalog";
+
+
+--
+-- TOC entry 2898 (class 0 OID 0)
+-- Dependencies: 1
+-- Name: EXTENSION "adminpack"; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION "adminpack" IS 'administrative functions for PostgreSQL';
+
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 197 (class 1259 OID 16394)
+-- Name: item; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "public"."item" (
+    "item_id" character(12) NOT NULL,
+    "item_name" character(30) NOT NULL,
+    "item_sell_price" "money" DEFAULT 0,
+    "item_stock" integer DEFAULT 1,
+    "item_imgurl" character(200)
+);
+
+
+ALTER TABLE "public"."item" OWNER TO "postgres";
+
+--
+-- TOC entry 211 (class 1259 OID 16597)
+-- Name: log; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "public"."log" (
+    "log_in" timestamp without time zone NOT NULL,
+    "log_out" timestamp without time zone NOT NULL,
+    "log_userid" smallint NOT NULL
+);
+
+
+ALTER TABLE "public"."log" OWNER TO "postgres";
+
+--
+-- TOC entry 210 (class 1259 OID 16595)
+-- Name: log_log_userid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE "public"."log_log_userid_seq"
+    AS smallint
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "public"."log_log_userid_seq" OWNER TO "postgres";
+
+--
+-- TOC entry 2899 (class 0 OID 0)
+-- Dependencies: 210
+-- Name: log_log_userid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE "public"."log_log_userid_seq" OWNED BY "public"."log"."log_userid";
+
+
+--
+-- TOC entry 201 (class 1259 OID 16472)
+-- Name: sale; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "public"."sale" (
+    "sale_id" integer NOT NULL,
+    "sale_user" smallint NOT NULL,
+    "sale_creation" timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE "public"."sale" OWNER TO "postgres";
+
+--
+-- TOC entry 203 (class 1259 OID 16523)
+-- Name: sale_sale_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE "public"."sale_sale_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "public"."sale_sale_id_seq" OWNER TO "postgres";
+
+--
+-- TOC entry 2900 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: sale_sale_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE "public"."sale_sale_id_seq" OWNED BY "public"."sale"."sale_id";
+
+
+--
+-- TOC entry 204 (class 1259 OID 16525)
+-- Name: sale_sale_user_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE "public"."sale_sale_user_seq"
+    AS smallint
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "public"."sale_sale_user_seq" OWNER TO "postgres";
+
+--
+-- TOC entry 2901 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: sale_sale_user_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE "public"."sale_sale_user_seq" OWNED BY "public"."sale"."sale_user";
+
+
+--
+-- TOC entry 200 (class 1259 OID 16446)
+-- Name: saleline; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "public"."saleline" (
+    "saleline_id" integer DEFAULT 1 NOT NULL,
+    "saleline_sale_id" integer NOT NULL,
+    "saleline_qty" integer DEFAULT 1 NOT NULL,
+    "saleline_discount" real DEFAULT 1 NOT NULL,
+    "saleline_item_id" character(12)
+);
+
+
+ALTER TABLE "public"."saleline" OWNER TO "postgres";
+
+--
+-- TOC entry 205 (class 1259 OID 16540)
+-- Name: saleline_saleline_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE "public"."saleline_saleline_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "public"."saleline_saleline_id_seq" OWNER TO "postgres";
+
+--
+-- TOC entry 2902 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: saleline_saleline_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE "public"."saleline_saleline_id_seq" OWNED BY "public"."saleline"."saleline_id";
+
+
+--
+-- TOC entry 206 (class 1259 OID 16542)
+-- Name: saleline_saleline_sale_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE "public"."saleline_saleline_sale_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "public"."saleline_saleline_sale_id_seq" OWNER TO "postgres";
+
+--
+-- TOC entry 2903 (class 0 OID 0)
+-- Dependencies: 206
+-- Name: saleline_saleline_sale_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE "public"."saleline_saleline_sale_id_seq" OWNED BY "public"."saleline"."saleline_sale_id";
+
+
+--
+-- TOC entry 199 (class 1259 OID 16421)
+-- Name: supplier; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "public"."supplier" (
+    "supplier_id" smallint NOT NULL,
+    "supplier_name" character(30) NOT NULL,
+    "supplier_phone" character(15),
+    "supplier_address" character(50)
+);
+
+
+ALTER TABLE "public"."supplier" OWNER TO "postgres";
+
+--
+-- TOC entry 207 (class 1259 OID 16565)
+-- Name: supplier_supplier_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE "public"."supplier_supplier_id_seq"
+    AS smallint
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "public"."supplier_supplier_id_seq" OWNER TO "postgres";
+
+--
+-- TOC entry 2904 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: supplier_supplier_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE "public"."supplier_supplier_id_seq" OWNED BY "public"."supplier"."supplier_id";
+
+
+--
+-- TOC entry 209 (class 1259 OID 16578)
+-- Name: supply; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "public"."supply" (
+    "supply_supplier_id" smallint NOT NULL,
+    "supply_baseprice" "money" NOT NULL,
+    "supply_item_id" character(12) NOT NULL
+);
+
+
+ALTER TABLE "public"."supply" OWNER TO "postgres";
+
+--
+-- TOC entry 208 (class 1259 OID 16576)
+-- Name: supply_supply_supplier_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE "public"."supply_supply_supplier_id_seq"
+    AS smallint
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "public"."supply_supply_supplier_id_seq" OWNER TO "postgres";
+
+--
+-- TOC entry 2905 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: supply_supply_supplier_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE "public"."supply_supply_supplier_id_seq" OWNED BY "public"."supply"."supply_supplier_id";
+
+
+--
+-- TOC entry 198 (class 1259 OID 16401)
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "public"."users" (
+    "user_id" smallint NOT NULL,
+    "user_name" character(30) NOT NULL,
+    "user_password" character(64) NOT NULL,
+    "user_salt" "bytea" NOT NULL,
+    "user_admin" boolean NOT NULL,
+    "user_creation" timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE "public"."users" OWNER TO "postgres";
+
+--
+-- TOC entry 202 (class 1259 OID 16501)
+-- Name: users_user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE "public"."users_user_id_seq"
+    AS smallint
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "public"."users_user_id_seq" OWNER TO "postgres";
+
+--
+-- TOC entry 2906 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: users_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE "public"."users_user_id_seq" OWNED BY "public"."users"."user_id";
+
+
+--
+-- TOC entry 2736 (class 2604 OID 16600)
+-- Name: log log_userid; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."log" ALTER COLUMN "log_userid" SET DEFAULT "nextval"('"public"."log_log_userid_seq"'::"regclass");
+
+
+--
+-- TOC entry 2733 (class 2604 OID 16527)
+-- Name: sale sale_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."sale" ALTER COLUMN "sale_id" SET DEFAULT "nextval"('"public"."sale_sale_id_seq"'::"regclass");
+
+
+--
+-- TOC entry 2734 (class 2604 OID 16528)
+-- Name: sale sale_user; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."sale" ALTER COLUMN "sale_user" SET DEFAULT "nextval"('"public"."sale_sale_user_seq"'::"regclass");
+
+
+--
+-- TOC entry 2729 (class 2604 OID 16545)
+-- Name: saleline saleline_sale_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."saleline" ALTER COLUMN "saleline_sale_id" SET DEFAULT "nextval"('"public"."saleline_saleline_sale_id_seq"'::"regclass");
+
+
+--
+-- TOC entry 2728 (class 2604 OID 16567)
+-- Name: supplier supplier_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."supplier" ALTER COLUMN "supplier_id" SET DEFAULT "nextval"('"public"."supplier_supplier_id_seq"'::"regclass");
+
+
+--
+-- TOC entry 2735 (class 2604 OID 16582)
+-- Name: supply supply_supplier_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."supply" ALTER COLUMN "supply_supplier_id" SET DEFAULT "nextval"('"public"."supply_supply_supplier_id_seq"'::"regclass");
+
+
+--
+-- TOC entry 2727 (class 2604 OID 16638)
+-- Name: users user_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."users" ALTER COLUMN "user_id" SET DEFAULT "nextval"('"public"."users_user_id_seq"'::"regclass");
+
+
+--
+-- TOC entry 2878 (class 0 OID 16394)
+-- Dependencies: 197
+-- Data for Name: item; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY "public"."item" ("item_id", "item_name", "item_sell_price", "item_stock", "item_imgurl") FROM stdin;
+\.
+
+
+--
+-- TOC entry 2892 (class 0 OID 16597)
+-- Dependencies: 211
+-- Data for Name: log; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY "public"."log" ("log_in", "log_out", "log_userid") FROM stdin;
+\.
+
+
+--
+-- TOC entry 2882 (class 0 OID 16472)
+-- Dependencies: 201
+-- Data for Name: sale; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY "public"."sale" ("sale_id", "sale_user", "sale_creation") FROM stdin;
+\.
+
+
+--
+-- TOC entry 2881 (class 0 OID 16446)
+-- Dependencies: 200
+-- Data for Name: saleline; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY "public"."saleline" ("saleline_id", "saleline_sale_id", "saleline_qty", "saleline_discount", "saleline_item_id") FROM stdin;
+\.
+
+
+--
+-- TOC entry 2880 (class 0 OID 16421)
+-- Dependencies: 199
+-- Data for Name: supplier; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY "public"."supplier" ("supplier_id", "supplier_name", "supplier_phone", "supplier_address") FROM stdin;
+\.
+
+
+--
+-- TOC entry 2890 (class 0 OID 16578)
+-- Dependencies: 209
+-- Data for Name: supply; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY "public"."supply" ("supply_supplier_id", "supply_baseprice", "supply_item_id") FROM stdin;
+\.
+
+
+--
+-- TOC entry 2879 (class 0 OID 16401)
+-- Dependencies: 198
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY "public"."users" ("user_id", "user_name", "user_password", "user_salt", "user_admin", "user_creation") FROM stdin;
+1001	Narin                         	7CBA8CB87CB1CA695A11F6D04C24626E1AC3C2C6A2FD431EF8D80250572DED48	\\x75806fe194fff014bae96aaf516470b087c12183	t	2019-03-10 17:45:07.789
+1002	Staff Test                    	5C0368045B151BD937022D2DF09296C9D3CD0E28EB1A2629980FF3BB65FCDFC7	\\x1450a264a7176a91e76b686d5c74e7c8006fbcb3	f	2019-03-17 14:13:34.843
+1003	Test Staff 1                  	DB6F47E9AA6A7A3F0968D14FD07066D4CE941F444B689647DACC491EDE8CCA72	\\xc2c34b0266792f87d68b8f75e8c8ac1f1abb3518	f	2019-03-17 16:31:20.168
+1004	Test 3                        	88C10AF3278421C9A5D82025217FC442E917292CA5A5951A3F675C1C854D6A23	\\x3feb912db551717f1a25a8a9f577f406d07f719b	f	2019-03-17 16:33:36.961
+1005	test5                         	700ABA4C53FCDA2FACD24BFAD83C35278697071B2284A57A5F40DE3B1D3AFF79	\\xbf17f405fd0b688ed6f1b3ee01cbe2410fbf1f9e	f	2019-03-17 16:35:36.287
+1006	test6                         	7C70FB260E3F43E35B2EA5A062766DECD48705C8A3386083D09ECBEE30A1F6FA	\\x698f04beeb896c27198aab487371ce15d86a1af0	f	2019-03-17 16:41:27.015
+\.
+
+
+--
+-- TOC entry 2907 (class 0 OID 0)
+-- Dependencies: 210
+-- Name: log_log_userid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."log_log_userid_seq"', 1, false);
+
+
+--
+-- TOC entry 2908 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: sale_sale_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."sale_sale_id_seq"', 1, false);
+
+
+--
+-- TOC entry 2909 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: sale_sale_user_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."sale_sale_user_seq"', 1, false);
+
+
+--
+-- TOC entry 2910 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: saleline_saleline_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."saleline_saleline_id_seq"', 1, false);
+
+
+--
+-- TOC entry 2911 (class 0 OID 0)
+-- Dependencies: 206
+-- Name: saleline_saleline_sale_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."saleline_saleline_sale_id_seq"', 1, false);
+
+
+--
+-- TOC entry 2912 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: supplier_supplier_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."supplier_supplier_id_seq"', 1, false);
+
+
+--
+-- TOC entry 2913 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: supply_supply_supplier_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."supply_supply_supplier_id_seq"', 1, false);
+
+
+--
+-- TOC entry 2914 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: users_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."users_user_id_seq"', 1007, true);
+
+
+--
+-- TOC entry 2738 (class 2606 OID 16613)
+-- Name: item item_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."item"
+    ADD CONSTRAINT "item_pkey" PRIMARY KEY ("item_id");
+
+
+--
+-- TOC entry 2750 (class 2606 OID 16602)
+-- Name: log log_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."log"
+    ADD CONSTRAINT "log_pkey" PRIMARY KEY ("log_in", "log_userid");
+
+
+--
+-- TOC entry 2746 (class 2606 OID 16530)
+-- Name: sale sale_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."sale"
+    ADD CONSTRAINT "sale_pkey" PRIMARY KEY ("sale_id");
+
+
+--
+-- TOC entry 2744 (class 2606 OID 16631)
+-- Name: saleline saleline_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."saleline"
+    ADD CONSTRAINT "saleline_pkey" PRIMARY KEY ("saleline_id", "saleline_sale_id");
+
+
+--
+-- TOC entry 2742 (class 2606 OID 16569)
+-- Name: supplier supplier_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."supplier"
+    ADD CONSTRAINT "supplier_pkey" PRIMARY KEY ("supplier_id");
+
+
+--
+-- TOC entry 2748 (class 2606 OID 16626)
+-- Name: supply supply_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."supply"
+    ADD CONSTRAINT "supply_pkey" PRIMARY KEY ("supply_supplier_id", "supply_item_id");
+
+
+--
+-- TOC entry 2740 (class 2606 OID 16505)
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."users"
+    ADD CONSTRAINT "users_pkey" PRIMARY KEY ("user_id");
+
+
+--
+-- TOC entry 2752 (class 2606 OID 16614)
+-- Name: saleline item_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."saleline"
+    ADD CONSTRAINT "item_fk" FOREIGN KEY ("saleline_item_id") REFERENCES "public"."item"("item_id");
+
+
+--
+-- TOC entry 2755 (class 2606 OID 16619)
+-- Name: supply item_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."supply"
+    ADD CONSTRAINT "item_fk" FOREIGN KEY ("supply_item_id") REFERENCES "public"."item"("item_id");
+
+
+--
+-- TOC entry 2756 (class 2606 OID 16603)
+-- Name: log log_log_userid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."log"
+    ADD CONSTRAINT "log_log_userid_fkey" FOREIGN KEY ("log_userid") REFERENCES "public"."users"("user_id");
+
+
+--
+-- TOC entry 2751 (class 2606 OID 16549)
+-- Name: saleline sale_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."saleline"
+    ADD CONSTRAINT "sale_fk" FOREIGN KEY ("saleline_sale_id") REFERENCES "public"."sale"("sale_id");
+
+
+--
+-- TOC entry 2754 (class 2606 OID 16590)
+-- Name: supply supply_supply_supplier_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."supply"
+    ADD CONSTRAINT "supply_supply_supplier_id_fkey" FOREIGN KEY ("supply_supplier_id") REFERENCES "public"."supplier"("supplier_id");
+
+
+--
+-- TOC entry 2753 (class 2606 OID 16531)
+-- Name: sale user_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."sale"
+    ADD CONSTRAINT "user_fk" FOREIGN KEY ("sale_user") REFERENCES "public"."users"("user_id");
+
+
+-- Completed on 2019-03-24 15:11:59
+
+--
+-- PostgreSQL database dump complete
+--
+

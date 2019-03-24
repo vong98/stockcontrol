@@ -34,7 +34,7 @@ public class LoginController extends Controller<StockManager>{
 	
 	public void initialize() {
 		try {
-			tempConnection = DriverManager.getConnection(url, "postgres", "tarzan");
+			tempConnection = DriverManager.getConnection(url, "postgres", "test");
 		} catch (Exception e) {
 			e.printStackTrace();			
 		}
