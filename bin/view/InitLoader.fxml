@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Label?>
+<?import java.net.URL?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" 
+	fx:controller="controller.InitLoaderController" prefHeight="800"
+	prefWidth="800" spacing="10" alignment="center">
+	
+	<Label text="Stock Manager" styleClass="h1"/>
+	<Text text="" fx:id="progressTxt"/>	
+	<Text text="" fx:id="errorTxt"/>
+	
+	<stylesheets>
+		<URL value="@styles.css"/>
+	</stylesheets>
+	
+</VBox>
+

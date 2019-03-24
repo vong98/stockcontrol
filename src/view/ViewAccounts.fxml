@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import java.net.URL?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="controller.ViewAccountsController"
+	alignment="TOP_LEFT" spacing="10">
+	<padding>
+		<Insets top="25" bottom="25" left="25" right="25"/>
+	</padding>
+	
+	<Label text="View All Accounts"/>
+	<TableView fx:id="accountsTableView">
+		<placeholder> <Text  text="No Accounts"/> </placeholder>
+		<columns>
+			<TableColumn text="ID">
+				<cellValueFactory> <PropertyValueFactory property="id"/> </cellValueFactory>
+			</TableColumn>
+			
+			<TableColumn text="Name">
+				<cellValueFactory> <PropertyValueFactory property="name"/> </cellValueFactory>
+			</TableColumn>
+			
+			<TableColumn text="Admin">
+				<cellValueFactory> <PropertyValueFactory property="admin"/> </cellValueFactory>
+			</TableColumn>
+			
+			<TableColumn text="Creation Date">
+				<cellValueFactory> <PropertyValueFactory property="creationTimestamp"/> </cellValueFactory>
+			</TableColumn>	
+		</columns>	
+	</TableView>
+	
+	<stylesheets>
+		<URL value="@styles.css"/>
+	</stylesheets>
+	
+</VBox>
+
