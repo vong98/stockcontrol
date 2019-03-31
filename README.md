@@ -1,11 +1,11 @@
-Stock Control/Management
+# Stock Control/Management
   Java MVC stock management application with a connection to a PostgreSQL database. Should include features like users management, item stock tracking, sales reports, POS page, etc. Intended for a small family owned mart.
   
-Pre-requisites
+# Pre-requisites
   1. You will need an installation of Postgres and a database management tool. I used PgAdmin as it came with the postgres installation.
   2. You will also need an install of a JDK and JavaFX SDK or just the JavaFX Runtime. This project was developed in Eclipse with e(fx)clipse.
 
-Installation
+# Installation
   1. Install Eclipse. (https://www.eclipse.org/downloads/)
   2. Download e(fx)clipse and install from Eclipse Marketplace.
   3. Install PostgreSQL along with PgAdmin. (https://www.postgresql.org/download/)
@@ -14,8 +14,8 @@ Installation
   6. Import and run the project in Eclipse.
   7. Log in using the main admin login: User ID: 1001 Password: test
  
-Acknowledgements:
+# Acknowledgements:
   - Password Hashing and Salts: Mr. Arpit Shah https://www.youtube.com/watch?v=hNKfEwTO3AQ
   
-Notes:
+# Notes:
   - This is my first readme.md, plz go easy on me
