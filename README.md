@@ -1,4 +1,4 @@
-# Stock Control/Management
+# Stock Control/Management (Unfinished)
   Java MVC stock management application with a connection to a PostgreSQL database. Should include features like users management, item stock tracking, sales reports, POS page, etc. Intended for a small family owned mart.
   
 # Pre-requisites
