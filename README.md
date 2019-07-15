@@ -16,6 +16,4 @@
  
 # Acknowledgements:
   - Password Hashing and Salts: Mr. Arpit Shah https://www.youtube.com/watch?v=hNKfEwTO3AQ
-  
-# Notes:
-  - This is my first readme.md, plz go easy on me
+
